@@ -1,0 +1,146 @@
+[
+  {
+    "escenario": "Razonamiento multi-paso + memoria conversacional",
+    "thread_id": "demo-multi-paso",
+    "preguntas": [
+      "¿Cuántos pedidos hizo Carla y cuál fue el total gastado?",
+      "¿Cuál fue el ID de cliente que usaste recién para averiguar eso?"
+    ],
+    "traza_completa": [
+      {
+        "tipo": "HumanMessage",
+        "contenido": "¿Cuántos pedidos hizo Carla y cuál fue el total gastado?"
+      },
+      {
+        "tipo": "HumanMessage",
+        "contenido": "¿Cuántos pedidos hizo Carla y cuál fue el total gastado?"
+      },
+      {
+        "tipo": "HumanMessage",
+        "contenido": "¿Cuántos pedidos hizo Carla y cuál fue el total gastado?"
+      },
+      {
+        "tipo": "AIMessage",
+        "contenido": "",
+        "tool_calls": [
+          {
+            "nombre": "buscar_cliente_id",
+            "argumentos": {
+              "nombre": "Carla"
+            },
+            "id": "call_HAC2e5CtdwJ806xSjwjpU5Rg"
+          }
+        ]
+      },
+      {
+        "tipo": "ToolMessage",
+        "contenido": "{\"cliente_id\": 102, \"nombre\": \"Carla Fernández\"}",
+        "herramienta": "buscar_cliente_id",
+        "tool_call_id": "call_HAC2e5CtdwJ806xSjwjpU5Rg"
+      },
+      {
+        "tipo": "AIMessage",
+        "contenido": "",
+        "tool_calls": [
+          {
+            "nombre": "buscar_pedidos",
+            "argumentos": {
+              "cliente_id": 102
+            },
+            "id": "call_0XtZyyKjb0xOpHy5kbFE9C53"
+          }
+        ]
+      },
+      {
+        "tipo": "ToolMessage",
+        "contenido": "{\"pedidos\": 3, \"total\": 14500}",
+        "herramienta": "buscar_pedidos",
+        "tool_call_id": "call_0XtZyyKjb0xOpHy5kbFE9C53"
+      },
+      {
+        "tipo": "AIMessage",
+        "contenido": "Carla Fernández hizo 3 pedidos y el total gastado fue de 14,500."
+      },
+      {
+        "tipo": "HumanMessage",
+        "contenido": "¿Cuál fue el ID de cliente que usaste recién para averiguar eso?"
+      },
+      {
+        "tipo": "AIMessage",
+        "contenido": "El ID de cliente que utilicé para averiguar eso es 102."
+      }
+    ]
+  },
+  {
+    "escenario": "Ciclo de Retorno: nombre ambiguo",
+    "thread_id": "demo-ambiguo",
+    "preguntas": [
+      "Buscá al cliente cuyo nombre contiene la letra 'a' y decime sus pedidos."
+    ],
+    "traza_completa": [
+      {
+        "tipo": "HumanMessage",
+        "contenido": "Buscá al cliente cuyo nombre contiene la letra 'a' y decime sus pedidos."
+      },
+      {
+        "tipo": "AIMessage",
+        "contenido": "",
+        "tool_calls": [
+          {
+            "nombre": "buscar_cliente_id",
+            "argumentos": {
+              "nombre": "a"
+            },
+            "id": "call_TmxBtu7WuoC2pZAkHnzOMGtf"
+          }
+        ]
+      },
+      {
+        "tipo": "ToolMessage",
+        "contenido": "{\"error\": \"'a' es ambiguo: coincide con varios clientes (Carla Fernández, Martín Gómez, Lucía Paredes). Pedile al usuario que aclare a cuál se refiere.\"}",
+        "herramienta": "buscar_cliente_id",
+        "tool_call_id": "call_TmxBtu7WuoC2pZAkHnzOMGtf"
+      },
+      {
+        "tipo": "AIMessage",
+        "contenido": "El término 'a' es ambiguo y coincide con varios clientes: Carla Fernández, Martín Gómez y Lucía Paredes. ¿Podrías aclarar a cuál de ellos te refieres?"
+      }
+    ]
+  },
+  {
+    "escenario": "Ciclo de Retorno: cliente inexistente",
+    "thread_id": "demo-inexistente",
+    "preguntas": [
+      "¿Cuántos pedidos tiene el cliente con ID 999?"
+    ],
+    "traza_completa": [
+      {
+        "tipo": "HumanMessage",
+        "contenido": "¿Cuántos pedidos tiene el cliente con ID 999?"
+      },
+      {
+        "tipo": "AIMessage",
+        "contenido": "",
+        "tool_calls": [
+          {
+            "nombre": "buscar_pedidos",
+            "argumentos": {
+              "cliente_id": 999
+            },
+            "id": "call_5coXxIZHDT59J8soZVkk4s7K"
+          }
+        ]
+      },
+      {
+        "tipo": "ToolMessage",
+        "contenido": "{\"error\": \"No se encontró ningún cliente con ID 999.\"}",
+        "herramienta": "buscar_pedidos",
+        "tool_call_id": "call_5coXxIZHDT59J8soZVkk4s7K"
+      },
+      {
+        "tipo": "AIMessage",
+        "contenido": "No se encontró ningún cliente con el ID 999. ¿Podrías verificar el ID o proporcionarme el nombre del cliente para que pueda buscarlo?"
+      }
+    ]
+  }
+]
